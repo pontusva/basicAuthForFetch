@@ -10,9 +10,11 @@ var cookieSession = require('cookie-session');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+const cookieParser = require('cookie-parser');
 
 
-  
+
+
 
 // api call + "protected route"
 
