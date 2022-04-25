@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const GeoIP = require("simple-geoip");
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 var cookieSession = require('cookie-session');
@@ -13,17 +14,23 @@ app.use(bodyParser.json());
 
 
 
-
-
+let middleware = async (req, res, next) => {
+  const response = await fetch('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=' + process.env.GEO_IP_TOKEN);
+  const results = await response.json();
+  
+  req.lat = results.location.lat;
+  req.lng = results.location.lng;
+  next();
+}
 
 // api call + "protected route"
 
-app.get(process.env.SECRET_ROUTE, async (req, res) => {
-    
-    
-    try {
-        const response = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=' + process.env.API_TOKEN)
+app.get(process.env.SECRET_ROUTE, middleware, async (req, res) => {
+
+    try {    
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${req.lat}&lon=${req.lng}&appid=${'e814afec2defa16917fab288ce5da3ea'}`)
         const results = await response.json();
+        
         const reject = () => {
             res.setHeader('www-authenticate', 'Basic')
             res.sendStatus(401)
