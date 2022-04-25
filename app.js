@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 
 let middleware = async (req, res, next) => {
-  const response = await fetch('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=' + process.env.GEO_IP_TOKEN);
+  const response = await fetch('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=' + process.env.GEO_IP_TOKEN + '&ipAddress=8.8.8.8');
   const results = await response.json();
   
   req.lat = results.location.lat;
