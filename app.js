@@ -28,7 +28,7 @@ let middleware = async (req, res, next) => {
 app.get(process.env.SECRET_ROUTE, middleware, async (req, res) => {
 
     try {    
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${req.lat}&lon=${req.lng}&appid=${'e814afec2defa16917fab288ce5da3ea'}`)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${req.lat}&lon=${req.lng}&appid=${process.env.API_TOKEN}`)
         const results = await response.json();
         
         const reject = () => {
